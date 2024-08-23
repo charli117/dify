@@ -95,7 +95,6 @@ const translation = {
     title: 'Tracing app performance',
     description: 'Configuring a Third-Party LLMOps provider and tracing app performance.',
     config: 'Config',
-    view: 'View',
     collapse: 'Collapse',
     expand: 'Expand',
     tracing: 'Tracing',
