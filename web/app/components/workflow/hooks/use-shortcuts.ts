@@ -1,6 +1,7 @@
 import { useReactFlow } from 'reactflow'
 import { useKeyPress } from 'ahooks'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
+import { ZEN_TOGGLE_EVENT } from '@/app/components/goto-anything/actions/commands/zen'
 import {
   getKeyboardKeyCodeBySystem,
   isEventTargetInputArea,
@@ -11,9 +12,9 @@ import {
   useEdgesInteractions,
   useNodesInteractions,
   useNodesSyncDraft,
+  useWorkflowCanvasMaximize,
   useWorkflowMoveMode,
   useWorkflowOrganize,
-  useWorkflowStartRun,
 } from '.'
 
 export const useShortcuts = (): void => {
@@ -24,8 +25,9 @@ export const useShortcuts = (): void => {
     handleNodesDelete,
     handleHistoryBack,
     handleHistoryForward,
+    dimOtherNodes,
+    undimAllNodes,
   } = useNodesInteractions()
-  const { handleStartWorkflowRun } = useWorkflowStartRun()
   const { shortcutsEnabled: workflowHistoryShortcutsEnabled } = useWorkflowHistoryStore()
   const { handleSyncWorkflowDraft } = useNodesSyncDraft()
   const { handleEdgeDelete } = useEdgesInteractions()
@@ -35,6 +37,7 @@ export const useShortcuts = (): void => {
     handleModePointer,
   } = useWorkflowMoveMode()
   const { handleLayout } = useWorkflowOrganize()
+  const { handleToggleMaximizeCanvas } = useWorkflowCanvasMaximize()
 
   const {
     zoomTo,
@@ -42,24 +45,23 @@ export const useShortcuts = (): void => {
     fitView,
   } = useReactFlow()
 
-  // Zoom out to a minimum of 0.5 for shortcut
+  // Zoom out to a minimum of 0.25 for shortcut
   const constrainedZoomOut = () => {
     const currentZoom = getZoom()
-    const newZoom = Math.max(currentZoom - 0.1, 0.5)
+    const newZoom = Math.max(currentZoom - 0.1, 0.25)
     zoomTo(newZoom)
   }
 
-  // Zoom in to a maximum of 1 for shortcut
+  // Zoom in to a maximum of 2 for shortcut
   const constrainedZoomIn = () => {
     const currentZoom = getZoom()
-    const newZoom = Math.min(currentZoom + 0.1, 1)
+    const newZoom = Math.min(currentZoom + 0.1, 2)
     zoomTo(newZoom)
   }
 
   const shouldHandleShortcut = useCallback((e: KeyboardEvent) => {
-    const { showFeaturesPanel } = workflowStore.getState()
-    return !showFeaturesPanel && !isEventTargetInputArea(e.target as HTMLElement)
-  }, [workflowStore])
+    return !isEventTargetInputArea(e.target as HTMLElement)
+  }, [])
 
   useKeyPress(['delete', 'backspace'], (e) => {
     if (shouldHandleShortcut(e)) {
@@ -95,7 +97,11 @@ export const useShortcuts = (): void => {
   useKeyPress(`${getKeyboardKeyCodeBySystem('alt')}.r`, (e) => {
     if (shouldHandleShortcut(e)) {
       e.preventDefault()
-      handleStartWorkflowRun()
+      // @ts-expect-error - Dynamic property added by run-and-history component
+      if (window._toggleTestRunDropdown) {
+        // @ts-expect-error - Dynamic property added by run-and-history component
+        window._toggleTestRunDropdown()
+      }
     }
   }, { exactMatch: true, useCapture: true })
 
@@ -103,7 +109,8 @@ export const useShortcuts = (): void => {
     const { showDebugAndPreviewPanel } = workflowStore.getState()
     if (shouldHandleShortcut(e) && !showDebugAndPreviewPanel) {
       e.preventDefault()
-      workflowHistoryShortcutsEnabled && handleHistoryBack()
+      if (workflowHistoryShortcutsEnabled)
+        handleHistoryBack()
     }
   }, { exactMatch: true, useCapture: true })
 
@@ -112,7 +119,8 @@ export const useShortcuts = (): void => {
     (e) => {
       if (shouldHandleShortcut(e)) {
         e.preventDefault()
-        workflowHistoryShortcutsEnabled && handleHistoryForward()
+        if (workflowHistoryShortcutsEnabled)
+          handleHistoryForward()
       }
     },
     { exactMatch: true, useCapture: true },
@@ -144,6 +152,16 @@ export const useShortcuts = (): void => {
       handleLayout()
     }
   }, { exactMatch: true, useCapture: true })
+
+  useKeyPress('f', (e) => {
+    if (shouldHandleShortcut(e)) {
+      e.preventDefault()
+      handleToggleMaximizeCanvas()
+    }
+  }, {
+    exactMatch: true,
+    useCapture: true,
+  })
 
   useKeyPress(`${getKeyboardKeyCodeBySystem('ctrl')}.1`, (e) => {
     if (shouldHandleShortcut(e)) {
@@ -199,4 +217,46 @@ export const useShortcuts = (): void => {
     exactMatch: true,
     useCapture: true,
   })
+
+  // Shift ↓
+  useKeyPress(
+    'shift',
+    (e) => {
+      if (shouldHandleShortcut(e))
+        dimOtherNodes()
+    },
+    {
+      exactMatch: true,
+      useCapture: true,
+      events: ['keydown'],
+    },
+  )
+
+  // Shift ↑
+  useKeyPress(
+    (e) => {
+      return e.key === 'Shift'
+    },
+    (e) => {
+      if (shouldHandleShortcut(e))
+        undimAllNodes()
+    },
+    {
+      exactMatch: true,
+      useCapture: true,
+      events: ['keyup'],
+    },
+  )
+
+  // Listen for zen toggle event from /zen command
+  useEffect(() => {
+    const handleZenToggle = () => {
+      handleToggleMaximizeCanvas()
+    }
+
+    window.addEventListener(ZEN_TOGGLE_EVENT, handleZenToggle)
+    return () => {
+      window.removeEventListener(ZEN_TOGGLE_EVENT, handleZenToggle)
+    }
+  }, [handleToggleMaximizeCanvas])
 }

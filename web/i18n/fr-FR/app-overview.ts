@@ -30,12 +30,12 @@ const translation = {
   overview: {
     title: 'Aperçu',
     appInfo: {
-      explanation: 'WebApp AI prête à l\'emploi',
+      explanation: 'web app AI prête à l\'emploi',
       accessibleAddress: 'URL publique',
       preview: 'Aperçu',
       regenerate: 'Regénérer',
       regenerateNotice: 'Voulez-vous régénérer l\'URL publique ?',
-      preUseReminder: 'Veuillez activer WebApp avant de continuer.',
+      preUseReminder: 'Veuillez activer web app avant de continuer.',
       settings: {
         entry: 'Paramètres',
         title: 'Paramètres de l\'application Web',
@@ -48,7 +48,7 @@ const translation = {
           title: 'Étapes du workflow',
           show: 'Afficher',
           hide: 'Masquer',
-          showDesc: 'Afficher ou masquer les détails du flux de travail dans WebApp',
+          showDesc: 'Afficher ou masquer les détails du flux de travail dans web app',
           subTitle: 'Détails du flux de travail',
         },
         chatColorTheme: 'Thème de couleur du chatbot',
@@ -71,9 +71,9 @@ const translation = {
         },
         sso: {
           label: 'Authentification SSO',
-          title: 'WebApp SSO',
-          tooltip: 'Contactez l’administrateur pour activer l’authentification unique WebApp',
-          description: 'Tous les utilisateurs doivent se connecter avec l’authentification unique avant d’utiliser WebApp',
+          title: 'web app SSO',
+          tooltip: 'Contactez l’administrateur pour activer l’authentification unique web app',
+          description: 'Tous les utilisateurs doivent se connecter avec l’authentification unique avant d’utiliser web app',
         },
         modalTip: 'Paramètres de l’application web côté client.',
       },
@@ -114,6 +114,11 @@ const translation = {
         },
       },
       launch: 'Lancer',
+      enableTooltip: {
+        description: 'Pour activer cette fonctionnalité, veuillez ajouter un nœud d\'entrée utilisateur sur le canevas. (Peut déjà exister dans le brouillon, prend effet après publication)',
+        learnMore: 'En savoir plus',
+      },
+      title: 'Application Web',
     },
     apiInfo: {
       title: 'API de service Backend',
@@ -124,6 +129,17 @@ const translation = {
     status: {
       running: 'En service',
       disable: 'Désactiver',
+    },
+    triggerInfo: {
+      title: 'Déclencheurs',
+      explanation: 'Gestion des déclencheurs de flux de travail',
+      triggersAdded: 'Déclencheurs ajoutés',
+      noTriggerAdded: 'Aucun déclencheur ajouté',
+      triggerStatusDescription: 'L\'état du nœud de déclenchement apparaît ici. (Peut déjà exister dans le brouillon, prend effet après publication)',
+      learnAboutTriggers: 'En savoir plus sur les déclencheurs',
+    },
+    disableTooltip: {
+      triggerMode: 'La fonctionnalité {{feature}} n\'est pas prise en charge en mode Nœud Déclencheur.',
     },
   },
   analysis: {

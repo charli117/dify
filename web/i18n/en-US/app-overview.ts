@@ -30,28 +30,33 @@ const translation = {
   overview: {
     title: 'Overview',
     appInfo: {
-      explanation: 'Ready-to-use AI WebApp',
+      title: 'Web App',
+      explanation: 'Ready-to-use AI web app',
       accessibleAddress: 'Public URL',
       preview: 'Preview',
       launch: 'Launch',
       regenerate: 'Regenerate',
       regenerateNotice: 'Do you want to regenerate the public URL?',
-      preUseReminder: 'Please enable WebApp before continuing.',
+      preUseReminder: 'Please enable web app before continuing.',
+      enableTooltip: {
+        description: 'To enable this feature, please add a User Input node to the canvas. (May already exist in draft, takes effect after publishing)',
+        learnMore: 'Learn more',
+      },
       settings: {
         entry: 'Settings',
         title: 'Web App Settings',
         modalTip: 'Client-side web app settings. ',
-        webName: 'WebApp Name',
-        webDesc: 'WebApp Description',
+        webName: 'web app Name',
+        webDesc: 'web app Description',
         webDescTip: 'This text will be displayed on the client side, providing basic guidance on how to use the application',
-        webDescPlaceholder: 'Enter the description of the WebApp',
+        webDescPlaceholder: 'Enter the description of the web app',
         language: 'Language',
         workflow: {
           title: 'Workflow',
           subTitle: 'Workflow Details',
           show: 'Show',
           hide: 'Hide',
-          showDesc: 'Show or hide workflow details in WebApp',
+          showDesc: 'Show or hide workflow details in web app',
         },
         chatColorTheme: 'Chat color theme',
         chatColorThemeDesc: 'Set the color theme of the chatbot',
@@ -60,14 +65,14 @@ const translation = {
         invalidPrivacyPolicy: 'Invalid privacy policy link. Please use a valid link that starts with http or https',
         sso: {
           label: 'SSO Enforcement',
-          title: 'WebApp SSO',
-          description: 'All users are required to login with SSO before using WebApp',
-          tooltip: 'Contact the administrator to enable WebApp SSO',
+          title: 'web app SSO',
+          description: 'All users are required to login with SSO before using web app',
+          tooltip: 'Contact the administrator to enable web app SSO',
         },
         more: {
           entry: 'Show more settings',
           copyright: 'Copyright',
-          copyrightTip: 'Display copyright information in the webapp',
+          copyrightTip: 'Display copyright information in the web app',
           copyrightTooltip: 'Please upgrade to Professional plan or above',
           copyRightPlaceholder: 'Enter the name of the author or organization',
           privacyPolicy: 'Privacy Policy',
@@ -96,7 +101,7 @@ const translation = {
       customize: {
         way: 'way',
         entry: 'Customize',
-        title: 'Customize AI WebApp',
+        title: 'Customize AI web app',
         explanation: 'You can customize the frontend of the Web App to fit your scenario and style needs.',
         way1: {
           name: 'Fork the client code, modify it and deploy to Vercel (recommended)',
@@ -121,9 +126,20 @@ const translation = {
       accessibleAddress: 'Service API Endpoint',
       doc: 'API Reference',
     },
+    triggerInfo: {
+      title: 'Triggers',
+      explanation: 'Workflow trigger management',
+      triggersAdded: '{{count}} Triggers added',
+      noTriggerAdded: 'No trigger added',
+      triggerStatusDescription: 'Trigger node status appears here. (May already exist in draft, takes effect after publishing)',
+      learnAboutTriggers: 'Learn about Triggers',
+    },
     status: {
       running: 'In Service',
       disable: 'Disabled',
+    },
+    disableTooltip: {
+      triggerMode: 'The {{feature}} feature is not supported in Trigger Node mode.',
     },
   },
   analysis: {

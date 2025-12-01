@@ -28,6 +28,8 @@ const translation = {
       delete: 'Excluir',
       enableWarning: 'O arquivo arquivado não pode ser habilitado',
       sync: 'Sincronizar',
+      resume: 'Retomar',
+      pause: 'Pausa',
     },
     index: {
       enable: 'Habilitar',
@@ -79,6 +81,10 @@ const translation = {
     },
     addUrl: 'Adicionar URL',
     learnMore: 'Saiba Mais',
+    sort: {
+      uploadTime: 'Hora do envio',
+      hitCount: 'Contagem de Recuperação',
+    },
   },
   metadata: {
     title: 'Metadados',
@@ -97,6 +103,9 @@ const translation = {
       upload_file: 'Enviar arquivo',
       notion: 'Sincronizar do Notion',
       github: 'Sincronizar do Github',
+      website_crawl: 'Rastreamento de sites',
+      local_file: 'Arquivo local',
+      online_document: 'Documento Online',
     },
     type: {
       book: 'Livro',
@@ -334,13 +343,13 @@ const translation = {
     hierarchical: 'Pai-filho',
     parentMaxTokens: 'Pai',
     childMaxTokens: 'Criança',
+    waiting: 'Aguarde a incorporação...',
   },
   segment: {
     paragraphs: 'Parágrafos',
     keywords: 'Palavras-chave',
     addKeyWord: 'Adicionar palavra-chave',
     keywordError: 'O comprimento máximo da palavra-chave é 20',
-    characters: 'caracteres',
     hitCount: 'Contagem de recuperação',
     vectorHash: 'Hash do vetor: ',
     questionPlaceholder: 'adicionar pergunta aqui',
@@ -374,6 +383,7 @@ const translation = {
     regeneratingMessage: 'Isso pode demorar um pouco, por favor aguarde...',
     edited: 'EDIÇÃO',
     editedAt: 'Editado em',
+    dateTimeFormat: 'DD/MM/YYYY HH:mm',
     expandChunks: 'Expandir pedaços',
     collapseChunks: 'Recolher partes',
     regenerationConfirmMessage: 'A regeneração de partes filhas substituirá as partes filhas atuais, incluindo partes editadas e partes recém-adicionadas. A regeneração não pode ser desfeita.',
@@ -389,6 +399,8 @@ const translation = {
     newChildChunk: 'Novo pedaço filho',
     characters_one: 'personagem',
     parentChunk: 'Pedaço pai',
+    keywordEmpty: 'A palavra-chave não pode estar vazia',
+    keywordDuplicate: 'A palavra-chave já existe',
   },
 }
 

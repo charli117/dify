@@ -10,13 +10,13 @@ import {
   RiLoader2Line,
   RiPlayLargeLine,
 } from '@remixicon/react'
-import LogoSite from '@/app/components/base/logo/logo-site'
+import DifyLogo from '@/app/components/base/logo/dify-logo'
 import Switch from '@/app/components/base/switch'
 import Button from '@/app/components/base/button'
 import Divider from '@/app/components/base/divider'
 import { useProviderContext } from '@/context/provider-context'
 import { Plan } from '@/app/components/billing/type'
-import { imageUpload } from '@/app/components/base/image-uploader/utils'
+import { getImageUploadErrorMessage, imageUpload } from '@/app/components/base/image-uploader/utils'
 import { useToastContext } from '@/app/components/base/toast'
 import { BubbleTextMod } from '@/app/components/base/icons/src/vender/solid/communication'
 import {
@@ -24,6 +24,7 @@ import {
 } from '@/service/common'
 import { useAppContext } from '@/context/app-context'
 import cn from '@/utils/classnames'
+import { useGlobalPublicStore } from '@/context/global-public-context'
 
 const ALLOW_FILE_EXTENSIONS = ['svg', 'png']
 
@@ -37,8 +38,9 @@ const CustomWebAppBrand = () => {
     isCurrentWorkspaceManager,
   } = useAppContext()
   const [fileId, setFileId] = useState('')
-  const [imgKey, setImgKey] = useState(Date.now())
+  const [imgKey, setImgKey] = useState(() => Date.now())
   const [uploadProgress, setUploadProgress] = useState(0)
+  const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   const isSandbox = enableBilling && plan.type === Plan.sandbox
   const uploading = uploadProgress > 0 && uploadProgress < 100
   const webappLogo = currentWorkspace.custom_config?.replace_webapp_logo || ''
@@ -65,8 +67,9 @@ const CustomWebAppBrand = () => {
         setUploadProgress(100)
         setFileId(res.id)
       },
-      onErrorCallback: () => {
-        notify({ type: 'error', message: t('common.imageUploader.uploadFromComputerUploadError') })
+      onErrorCallback: (error?: any) => {
+        const errorMessage = getImageUploadErrorMessage(error, t('common.imageUploader.uploadFromComputerUploadError'), t)
+        notify({ type: 'error', message: errorMessage })
         setUploadProgress(-1)
       },
     }, false, '/workspaces/custom-config/webapp-logo/upload')
@@ -128,7 +131,7 @@ const CustomWebAppBrand = () => {
           <div className='system-xs-regular text-text-tertiary'>{t('custom.webapp.changeLogoTip')}</div>
         </div>
         <div className='flex items-center'>
-          {(uploadDisabled || (!webappLogo && !webappBrandRemoved)) && (
+          {(!uploadDisabled && webappLogo && !webappBrandRemoved) && (
             <>
               <Button
                 variant='ghost'
@@ -244,9 +247,12 @@ const CustomWebAppBrand = () => {
                 {!webappBrandRemoved && (
                   <>
                     <div className='system-2xs-medium-uppercase text-text-tertiary'>POWERED BY</div>
-                    {webappLogo
-                      ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
-                      : <LogoSite className='!h-5' />
+                    {
+                      systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
+                        ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
+                        : webappLogo
+                          ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
+                          : <DifyLogo size='small' />
                     }
                   </>
                 )}
@@ -303,9 +309,12 @@ const CustomWebAppBrand = () => {
             {!webappBrandRemoved && (
               <>
                 <div className='system-2xs-medium-uppercase text-text-tertiary'>POWERED BY</div>
-                {webappLogo
-                  ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
-                  : <LogoSite className='!h-5' />
+                {
+                  systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
+                    ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
+                    : webappLogo
+                      ? <img src={`${webappLogo}?hash=${imgKey}`} alt='logo' className='block h-5 w-auto' />
+                      : <DifyLogo size='small' />
                 }
               </>
             )}

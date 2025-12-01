@@ -30,26 +30,26 @@ const translation = {
   overview: {
     title: 'ภาพรวม',
     appInfo: {
-      explanation: 'AI WebApp พร้อมใช้งาน',
+      explanation: 'AI web app พร้อมใช้งาน',
       accessibleAddress: 'URL สาธารณะ',
       preview: 'ดูตัวอย่าง',
       regenerate: 'สร้างใหม่',
       regenerateNotice: 'คุณต้องการสร้าง URL สาธารณะใหม่หรือไม่',
-      preUseReminder: 'โปรดเปิดใช้งาน WebApp ก่อนดําเนินการต่อ',
+      preUseReminder: 'โปรดเปิดใช้งาน web app ก่อนดําเนินการต่อ',
       settings: {
         entry: 'การตั้งค่า',
         title: 'การตั้งค่าเว็บแอป',
         webName: 'ชื่อเว็บแอป',
-        webDesc: 'คําอธิบาย WebApp',
+        webDesc: 'คําอธิบาย web app',
         webDescTip: 'ข้อความนี้จะแสดงที่ฝั่งไคลเอ็นต์ โดยให้คําแนะนําพื้นฐานเกี่ยวกับวิธีการใช้แอปพลิเคชัน',
-        webDescPlaceholder: 'ป้อนคําอธิบายของ WebApp',
+        webDescPlaceholder: 'ป้อนคําอธิบายของ web app',
         language: 'ภาษา',
         workflow: {
           title: 'เวิร์กโฟลว์',
           subTitle: 'รายละเอียดเวิร์กโฟลว์',
           show: 'แสดง',
           hide: 'ซ่อน',
-          showDesc: 'แสดงหรือซ่อนรายละเอียดเวิร์กโฟลว์ใน WebApp',
+          showDesc: 'แสดงหรือซ่อนรายละเอียดเวิร์กโฟลว์ใน web app',
         },
         chatColorTheme: 'ธีมสีแชท',
         chatColorThemeDesc: 'กําหนดธีมสีของแชทบอท',
@@ -59,8 +59,8 @@ const translation = {
         sso: {
           label: 'การรับรองความถูกต้องของ SSO',
           title: 'เว็บแอป SSO',
-          description: 'ผู้ใช้ทุกคนต้องเข้าสู่ระบบด้วย SSO ก่อนใช้ WebApp',
-          tooltip: 'ติดต่อผู้ดูแลระบบเพื่อเปิดใช้ WebApp SSO',
+          description: 'ผู้ใช้ทุกคนต้องเข้าสู่ระบบด้วย SSO ก่อนใช้ web app',
+          tooltip: 'ติดต่อผู้ดูแลระบบเพื่อเปิดใช้ web app SSO',
         },
         more: {
           entry: 'แสดงการตั้งค่าเพิ่มเติม',
@@ -95,7 +95,7 @@ const translation = {
       customize: {
         way: 'วิธี',
         entry: 'ปรับแต่ง',
-        title: 'ปรับแต่ง AI WebApp',
+        title: 'ปรับแต่ง AI web app',
         explanation: 'คุณสามารถปรับแต่งส่วนหน้าของ Web App ให้เหมาะกับสถานการณ์และความต้องการสไตล์ของคุณได้',
         way1: {
           name: 'แยกรหัสไคลเอ็นต์ แก้ไข และปรับใช้กับ Vercel (แนะนํา)',
@@ -114,6 +114,11 @@ const translation = {
         },
       },
       launch: 'เรือยนต์',
+      enableTooltip: {
+        description: 'เพื่อเปิดใช้งานฟีเจอร์นี้ โปรดเพิ่มโหนดการป้อนข้อมูลผู้ใช้ไปยังแคนวาส (อาจมีอยู่แล้วในร่าง ใช้งานได้หลังจากเผยแพร่)',
+        learnMore: 'เรียนรู้เพิ่มเติม',
+      },
+      title: 'เว็บแอป',
     },
     apiInfo: {
       title: 'API บริการแบ็กเอนด์',
@@ -124,6 +129,17 @@ const translation = {
     status: {
       running: 'ให้บริการ',
       disable: 'พิการ',
+    },
+    triggerInfo: {
+      title: 'สิ่งกระตุ้น',
+      explanation: 'การจัดการทริกเกอร์เวิร์กโฟลว์',
+      triggersAdded: 'เพิ่มทริกเกอร์เรียบร้อยแล้ว',
+      noTriggerAdded: 'ยังไม่ได้เพิ่มทริกเกอร์',
+      triggerStatusDescription: 'สถานะของโหนดตัวเรียกปรากฏที่นี่ (อาจมีอยู่แล้วในร่าง และจะมีผลหลังจากเผยแพร่)',
+      learnAboutTriggers: 'เรียนรู้เกี่ยวกับทริกเกอร์',
+    },
+    disableTooltip: {
+      triggerMode: 'โหมดโหนดทริกเกอร์ไม่รองรับฟีเจอร์ {{feature}}.',
     },
   },
   analysis: {

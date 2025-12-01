@@ -49,7 +49,7 @@ const translation = {
           show: 'Afișați',
           hide: 'Ascundeți',
           subTitle: 'Detalii despre fluxul de lucru',
-          showDesc: 'Afișarea sau ascunderea detaliilor fluxului de lucru în WebApp',
+          showDesc: 'Afișarea sau ascunderea detaliilor fluxului de lucru în web app',
         },
         chatColorTheme: 'Tema de culoare a chatului',
         chatColorThemeDesc: 'Setați tema de culoare a chatbotului',
@@ -71,9 +71,9 @@ const translation = {
         },
         sso: {
           label: 'Autentificare SSO',
-          title: 'WebApp SSO',
-          description: 'Toți utilizatorii trebuie să se conecteze cu SSO înainte de a utiliza WebApp',
-          tooltip: 'Contactați administratorul pentru a activa WebApp SSO',
+          title: 'web app SSO',
+          description: 'Toți utilizatorii trebuie să se conecteze cu SSO înainte de a utiliza web app',
+          tooltip: 'Contactați administratorul pentru a activa web app SSO',
         },
         modalTip: 'Setările aplicației web pe partea clientului.',
       },
@@ -114,6 +114,11 @@ const translation = {
         },
       },
       launch: 'Lansa',
+      enableTooltip: {
+        description: 'Pentru a activa această funcție, vă rugăm să adăugați un nod de introducere a utilizatorului pe canvas. (Poate exista deja în schiță, are efect după publicare)',
+        learnMore: 'Aflați mai multe',
+      },
+      title: 'Aplicație web',
     },
     apiInfo: {
       title: 'API serviciu backend',
@@ -124,6 +129,17 @@ const translation = {
     status: {
       running: 'În service',
       disable: 'Dezactivat',
+    },
+    triggerInfo: {
+      title: 'Declanșatoare',
+      explanation: 'Gestionarea declanșatoarelor de flux de lucru',
+      triggersAdded: '{{count}} Declanșatoare adăugate',
+      noTriggerAdded: 'Niciun declanșator adăugat',
+      triggerStatusDescription: 'Starea nodului declanșator apare aici. (Poate exista deja în draft, devine efectivă după publicare)',
+      learnAboutTriggers: 'Află despre Declanșatoare',
+    },
+    disableTooltip: {
+      triggerMode: 'Funcționalitatea {{feature}} nu este suportată în modul Nod Trigger.',
     },
   },
   analysis: {

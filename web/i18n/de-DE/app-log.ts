@@ -1,7 +1,8 @@
 const translation = {
   title: 'Protokolle',
   description: 'Die Protokolle zeichnen den Betriebsstatus der Anwendung auf, einschließlich Benutzereingaben und KI-Antworten.',
-  dateTimeFormat: 'MM/DD/YYYY hh:mm A',
+  dateTimeFormat: 'MM/DD/YYYY hh:mm:ss A',
+  dateFormat: 'MM/DD/YYYY',
   table: {
     header: {
       updatedTime: 'Aktualisierungszeit',
@@ -19,6 +20,7 @@ const translation = {
       version: 'VERSION',
       tokens: 'TOKEN',
       startTime: 'STARTZEIT',
+      triggered_from: 'AUSGELÖST DURCH',
     },
     pagination: {
       previous: 'Vorherige',
@@ -65,6 +67,8 @@ const translation = {
       quarterToDate: 'Quartal bis heute',
       yearToDate: 'Jahr bis heute',
       allTime: 'Gesamte Zeit',
+      last30days: 'Letzte 30 Tage',
+      custom: 'Benutzerdefiniert',
     },
     annotation: {
       all: 'Alle',
@@ -82,6 +86,7 @@ const translation = {
     workflowTitle: 'Protokolldetail',
     fileListLabel: 'Details zur Datei',
     fileListDetail: 'Detail',
+    testWithParams: 'Test mit Parametern',
   },
   promptLog: 'Prompt-Protokoll',
   agentLog: 'Agentenprotokoll',
@@ -92,6 +97,15 @@ const translation = {
     iterations: 'Iterationen',
     iteration: 'Iteration',
     finalProcessing: 'Endverarbeitung',
+  },
+  triggerBy: {
+    debugging: 'Fehlerbehebung',
+    appRun: 'Webanwendung',
+    webhook: 'Webhook',
+    schedule: 'Zeitplan',
+    plugin: 'Plugin',
+    ragPipelineRun: 'RAG-Pipeline',
+    ragPipelineDebugging: 'RAG-Debugging',
   },
 }
 

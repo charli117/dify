@@ -20,6 +20,8 @@ import EditReplyModal from '@/app/components/app/annotation/edit-annotation-moda
 import Log from '@/app/components/base/chat/chat/log'
 import ActionButton, { ActionButtonState } from '@/app/components/base/action-button'
 import NewAudioButton from '@/app/components/base/new-audio-button'
+import Modal from '@/app/components/base/modal/modal'
+import Textarea from '@/app/components/base/textarea'
 import cn from '@/utils/classnames'
 
 type OperationProps = {
@@ -32,6 +34,7 @@ type OperationProps = {
   hasWorkflowProcess: boolean
   noChatInput?: boolean
 }
+
 const Operation: FC<OperationProps> = ({
   item,
   question,
@@ -52,6 +55,8 @@ const Operation: FC<OperationProps> = ({
     onRegenerate,
   } = useChatContext()
   const [isShowReplyModal, setIsShowReplyModal] = useState(false)
+  const [isShowFeedbackModal, setIsShowFeedbackModal] = useState(false)
+  const [feedbackContent, setFeedbackContent] = useState('')
   const {
     id,
     isOpeningStatement,
@@ -62,6 +67,10 @@ const Operation: FC<OperationProps> = ({
     agent_thoughts,
   } = item
   const [localFeedback, setLocalFeedback] = useState(config?.supportAnnotation ? adminFeedback : feedback)
+  const [adminLocalFeedback, setAdminLocalFeedback] = useState(adminFeedback)
+
+  // Separate feedback types for display
+  const userFeedback = feedback
 
   const content = useMemo(() => {
     if (agent_thoughts?.length)
@@ -70,12 +79,31 @@ const Operation: FC<OperationProps> = ({
     return messageContent
   }, [agent_thoughts, messageContent])
 
-  const handleFeedback = async (rating: 'like' | 'dislike' | null) => {
+  const handleFeedback = async (rating: 'like' | 'dislike' | null, content?: string) => {
     if (!config?.supportFeedback || !onFeedback)
       return
 
-    await onFeedback?.(id, { rating })
+    await onFeedback?.(id, { rating, content })
     setLocalFeedback({ rating })
+
+    // Update admin feedback state separately if annotation is supported
+    if (config?.supportAnnotation)
+      setAdminLocalFeedback(rating ? { rating } : undefined)
+  }
+
+  const handleThumbsDown = () => {
+    setIsShowFeedbackModal(true)
+  }
+
+  const handleFeedbackSubmit = async () => {
+    await handleFeedback('dislike', feedbackContent)
+    setFeedbackContent('')
+    setIsShowFeedbackModal(false)
+  }
+
+  const handleFeedbackCancel = () => {
+    setFeedbackContent('')
+    setIsShowFeedbackModal(false)
   }
 
   const operationWidth = useMemo(() => {
@@ -153,25 +181,60 @@ const Operation: FC<OperationProps> = ({
                 <ActionButton onClick={() => handleFeedback('like')}>
                   <RiThumbUpLine className='h-4 w-4' />
                 </ActionButton>
-                <ActionButton onClick={() => handleFeedback('dislike')}>
+                <ActionButton onClick={handleThumbsDown}>
                   <RiThumbDownLine className='h-4 w-4' />
                 </ActionButton>
               </>
             )}
           </div>
         )}
-        {!isOpeningStatement && config?.supportFeedback && localFeedback?.rating && onFeedback && (
+        {!isOpeningStatement && config?.supportFeedback && onFeedback && (
           <div className='ml-1 flex items-center gap-0.5 rounded-[10px] border-[0.5px] border-components-actionbar-border bg-components-actionbar-bg p-0.5 shadow-md backdrop-blur-sm'>
-            {localFeedback?.rating === 'like' && (
-              <ActionButton state={ActionButtonState.Active} onClick={() => handleFeedback(null)}>
-                <RiThumbUpLine className='h-4 w-4' />
-              </ActionButton>
+            {/* User Feedback Display */}
+            {userFeedback?.rating && (
+              <div className='flex items-center'>
+                <span className='mr-1 text-xs text-text-tertiary'>User</span>
+                {userFeedback.rating === 'like' ? (
+                  <ActionButton state={ActionButtonState.Active} title={userFeedback.content ? `User liked this response: ${userFeedback.content}` : 'User liked this response'}>
+                    <RiThumbUpLine className='h-3 w-3' />
+                  </ActionButton>
+                ) : (
+                  <ActionButton state={ActionButtonState.Destructive} title={userFeedback.content ? `User disliked this response: ${userFeedback.content}` : 'User disliked this response'}>
+                    <RiThumbDownLine className='h-3 w-3' />
+                  </ActionButton>
+                )}
+              </div>
             )}
-            {localFeedback?.rating === 'dislike' && (
-              <ActionButton state={ActionButtonState.Destructive} onClick={() => handleFeedback(null)}>
-                <RiThumbDownLine className='h-4 w-4' />
-              </ActionButton>
+
+            {/* Admin Feedback Controls */}
+            {config?.supportAnnotation && (
+              <div className='flex items-center'>
+                {userFeedback?.rating && <div className='mx-1 h-3 w-[0.5px] bg-components-actionbar-border' />}
+                {!adminLocalFeedback?.rating ? (
+                  <>
+                    <ActionButton onClick={() => handleFeedback('like')}>
+                      <RiThumbUpLine className='h-4 w-4' />
+                    </ActionButton>
+                    <ActionButton onClick={handleThumbsDown}>
+                      <RiThumbDownLine className='h-4 w-4' />
+                    </ActionButton>
+                  </>
+                ) : (
+                  <>
+                    {adminLocalFeedback.rating === 'like' ? (
+                      <ActionButton state={ActionButtonState.Active} onClick={() => handleFeedback(null)}>
+                        <RiThumbUpLine className='h-4 w-4' />
+                      </ActionButton>
+                    ) : (
+                      <ActionButton state={ActionButtonState.Destructive} onClick={() => handleFeedback(null)}>
+                        <RiThumbDownLine className='h-4 w-4' />
+                      </ActionButton>
+                    )}
+                  </>
+                )}
+              </div>
             )}
+
           </div>
         )}
       </div>
@@ -188,6 +251,32 @@ const Operation: FC<OperationProps> = ({
         createdAt={annotation?.created_at}
         onRemove={() => onAnnotationRemoved?.(index)}
       />
+      {isShowFeedbackModal && (
+        <Modal
+          title={t('common.feedback.title') || 'Provide Feedback'}
+          subTitle={t('common.feedback.subtitle') || 'Please tell us what went wrong with this response'}
+          onClose={handleFeedbackCancel}
+          onConfirm={handleFeedbackSubmit}
+          onCancel={handleFeedbackCancel}
+          confirmButtonText={t('common.operation.submit') || 'Submit'}
+          cancelButtonText={t('common.operation.cancel') || 'Cancel'}
+        >
+          <div className='space-y-3'>
+            <div>
+              <label className='system-sm-semibold mb-2 block text-text-secondary'>
+                {t('common.feedback.content') || 'Feedback Content'}
+              </label>
+              <Textarea
+                value={feedbackContent}
+                onChange={e => setFeedbackContent(e.target.value)}
+                placeholder={t('common.feedback.placeholder') || 'Please describe what went wrong or how we can improve...'}
+                rows={4}
+                className='w-full'
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
     </>
   )
 }

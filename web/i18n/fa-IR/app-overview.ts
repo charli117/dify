@@ -35,20 +35,20 @@ const translation = {
       preview: 'پیش‌نمایش',
       regenerate: 'تولید مجدد',
       regenerateNotice: 'آیا می‌خواهید آدرس عمومی را دوباره تولید کنید؟',
-      preUseReminder: 'لطفاً قبل از ادامه، WebApp را فعال کنید.',
+      preUseReminder: 'لطفاً قبل از ادامه، web app را فعال کنید.',
       settings: {
         entry: 'تنظیمات',
-        title: 'تنظیمات WebApp',
-        webName: 'نام WebApp',
-        webDesc: 'توضیحات WebApp',
+        title: 'تنظیمات web app',
+        webName: 'نام web app',
+        webDesc: 'توضیحات web app',
         webDescTip: 'این متن در سمت مشتری نمایش داده می‌شود و راهنمایی‌های اولیه در مورد نحوه استفاده از برنامه را ارائه می‌دهد',
-        webDescPlaceholder: 'توضیحات WebApp را وارد کنید',
+        webDescPlaceholder: 'توضیحات web app را وارد کنید',
         language: 'زبان',
         workflow: {
           title: 'مراحل کاری',
           show: 'نمایش',
           hide: 'مخفی کردن',
-          showDesc: 'نمایش یا پنهان کردن جزئیات گردش کار در WebApp',
+          showDesc: 'نمایش یا پنهان کردن جزئیات گردش کار در web app',
           subTitle: 'جزئیات گردش کار',
         },
         chatColorTheme: 'تم رنگی چت',
@@ -70,10 +70,10 @@ const translation = {
           copyrightTooltip: 'لطفا به طرح حرفه ای یا بالاتر ارتقا دهید',
         },
         sso: {
-          title: 'WebApp SSO',
+          title: 'web app SSO',
           label: 'احراز هویت SSO',
-          description: 'همه کاربران باید قبل از استفاده از WebApp با SSO وارد شوند',
-          tooltip: 'برای فعال کردن WebApp SSO با سرپرست تماس بگیرید',
+          description: 'همه کاربران باید قبل از استفاده از web app با SSO وارد شوند',
+          tooltip: 'برای فعال کردن web app SSO با سرپرست تماس بگیرید',
         },
         modalTip: 'تنظیمات برنامه وب سمت مشتری.',
       },
@@ -95,7 +95,7 @@ const translation = {
       customize: {
         way: 'راه',
         entry: 'سفارشی‌سازی',
-        title: 'سفارشی‌سازی WebApp AI',
+        title: 'سفارشی‌سازی web app AI',
         explanation: 'شما می‌توانید ظاهر جلویی برنامه وب را برای برآوردن نیازهای سناریو و سبک خود سفارشی کنید.',
         way1: {
           name: 'کلاینت را شاخه کنید، آن را تغییر دهید و در Vercel مستقر کنید (توصیه می‌شود)',
@@ -114,6 +114,11 @@ const translation = {
         },
       },
       launch: 'راه اندازی',
+      enableTooltip: {
+        description: 'برای فعال کردن این ویژگی، لطفاً یک گره ورودی کاربر به صفحه اضافه کنید. (ممکن است قبلاً در پیش‌نویس وجود داشته باشد، بعد از انتشار اعمال می‌شود)',
+        learnMore: 'بیشتر بدانید',
+      },
+      title: 'وب اپ',
     },
     apiInfo: {
       title: 'API سرویس بک‌اند',
@@ -124,6 +129,17 @@ const translation = {
     status: {
       running: 'در حال سرویس‌دهی',
       disable: 'غیرفعال',
+    },
+    triggerInfo: {
+      title: 'محرک‌ها',
+      explanation: 'مدیریت فعال‌سازی جریان کاری',
+      triggersAdded: '{{count}} محرک‌ها اضافه شدند',
+      noTriggerAdded: 'هیچ ماشه‌ای افزوده نشده است',
+      triggerStatusDescription: 'وضعیت گره تریگر در اینجا نمایش داده می‌شود. (ممکن است قبلاً در پیش‌نویس وجود داشته باشد، پس از انتشار اعمال می‌شود)',
+      learnAboutTriggers: 'با محرک‌ها آشنا شوید',
+    },
+    disableTooltip: {
+      triggerMode: 'ویژگی {{feature}} در حالت گره تریگر پشتیبانی نمی‌شود.',
     },
   },
   analysis: {

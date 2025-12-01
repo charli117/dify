@@ -20,7 +20,6 @@ const translation = {
   intro5: 'можна створити',
   intro6: ' як автономний плагін індексу ChatGPT для публікації',
   unavailable: 'Недоступно',
-  unavailableTip: 'Модель вбудовування недоступна, необхідно налаштувати модель вбудовування за замовчуванням',
   datasets: 'ЗНАННЯ',
   datasetsApi: 'API',
   retrieval: {
@@ -38,11 +37,13 @@ const translation = {
       recommend: 'Рекомендовано',
     },
     invertedIndex: {
-      title: 'Інвертований індекс',
-      description: 'Інвертований індекс – це структура, яка використовується для ефективного пошуку. Організований за термінами, кожен термін вказує на документи або веб-сторінки, що його містять.',
     },
     change: 'Змінити',
     changeRetrievalMethod: 'Змінити метод пошуку',
+    keyword_search: {
+      title: 'Перевернутий індекс',
+      description: 'Перевернутий індекс — це структура, яка використовується для ефективного пошуку. Упорядкований за термінами, кожен термін вказує на документи або веб-сторінки, що містять його.',
+    },
   },
   docsFailedNotice: 'документи не вдалося проіндексувати',
   retry: 'Повторити спробу',
@@ -150,6 +151,8 @@ const translation = {
   chunkingMode: {
     parentChild: 'Батьки-діти',
     general: 'Загальне',
+    graph: 'Графік',
+    qa: 'Питання та відповіді',
   },
   parentMode: {
     fullDoc: 'Повний документ',
@@ -169,6 +172,73 @@ const translation = {
   enable: 'Вмикати',
   allKnowledge: 'Всі знання',
   allKnowledgeDescription: 'Виберіть, щоб відобразити всі знання в цій робочій області. Тільки власник робочої області може керувати всіма знаннями.',
+  metadata: {
+    createMetadata: {
+      back: 'Назад',
+      title: 'Нові метадані',
+      type: 'Тип',
+      namePlaceholder: 'Додати назву метаданих',
+      name: 'Ім\'я',
+    },
+    checkName: {
+      empty: 'Ім\'я метаданих не може бути порожнім',
+      invalid: 'Ім\'я метаданих може містити лише малі літери, цифри та підкреслення, і повинно починатися з малої літери',
+      tooLong: 'Назва метаданих не може перевищувати {{max}} символів',
+    },
+    batchEditMetadata: {
+      editMetadata: 'Редагувати метадані',
+      editDocumentsNum: 'Редагування {{num}} документів',
+      applyToAllSelectDocument: 'Застосувати до всіх вибраних документів',
+      multipleValue: 'Кілька значень',
+      applyToAllSelectDocumentTip: 'Автоматично створювати всю редаговану та нову метадані для всіх вибраних документів, інакше редагування метаданих буде застосовуватися тільки до документів, які мають їх.',
+    },
+    selectMetadata: {
+      manageAction: 'Керувати',
+      search: 'Пошукова метаінформація',
+      newAction: 'Нові метадані',
+    },
+    datasetMetadata: {
+      namePlaceholder: 'Назва метаданих',
+      rename: 'Перейменувати',
+      disabled: 'Вимкнено',
+      name: 'Ім\'я',
+      values: '{{num}} Значення',
+      builtIn: 'Вбудований',
+      addMetaData: 'Додати метадані',
+      description: 'Ви можете керувати всіма метаданими в цьому знанні тут. Модифікації будуть синхронізовані з кожним документом.',
+      builtInDescription: 'Вбудовані метадані автоматично витягуються та генеруються. Вони повинні бути активовані перед використанням і не можуть бути відредаговані.',
+      deleteTitle: 'Підтвердьте, щоб видалити',
+      deleteContent: 'Ви впевнені, що хочете видалити метадані "{{name}}"?',
+    },
+    documentMetadata: {
+      documentInformation: 'Інформація про документ',
+      technicalParameters: 'Технічні параметри',
+      startLabeling: 'Почати маркування',
+      metadataToolTip: 'Метадані слугують критичною фільтрацією, що підвищує точність і актуальність витягування інформації. Ви можете змінити та додати метадані для цього документа тут.',
+    },
+    metadata: 'Метадані',
+    chooseTime: 'Виберіть час...',
+    addMetadata: 'Додати метадані',
+  },
+  embeddingModelNotAvailable: 'Модель вбудовування недоступна.',
+  updated: 'Оновлено',
+  createFromPipeline: 'Створюйте на основі Knowledge Pipeline',
+  externalKnowledgeBase: 'Зовнішня база знань',
+  serviceApi: {
+    card: {
+      title: 'API бекенд-сервіс',
+      apiReference: 'Посилання на API',
+      apiKey: 'Ключ API',
+      endpoint: 'Кінцева точка API сервісу',
+    },
+    disabled: 'Вимкнено',
+    enabled: 'У службі',
+    title: 'Сервісний API',
+  },
+  docAllEnabled_one: '{{count}} документ увімкнено',
+  docAllEnabled_other: 'Усі документи {{count}} увімкнено',
+  partialEnabled_one: 'Всього {{count}} документів, доступно {{num}}',
+  partialEnabled_other: 'Всього {{count}} документів, доступно {{num}}',
 }
 
 export default translation

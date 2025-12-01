@@ -1,6 +1,6 @@
 'use client'
 import type { FC } from 'react'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'
 import {
@@ -10,7 +10,7 @@ import {
 } from '@remixicon/react'
 import ConfigContext from '@/context/debug-configuration'
 import type { Inputs } from '@/models/debug'
-import { AppType, ModelModeType } from '@/types/app'
+import { AppModeEnum, ModelModeType } from '@/types/app'
 import Select from '@/app/components/base/select'
 import Button from '@/app/components/base/button'
 import Input from '@/app/components/base/input'
@@ -22,9 +22,10 @@ import type { VisionFile, VisionSettings } from '@/types/app'
 import { DEFAULT_VALUE_MAX_LEN } from '@/config'
 import { useStore as useAppStore } from '@/app/components/app/store'
 import cn from '@/utils/classnames'
+import BoolInput from '@/app/components/workflow/nodes/_base/components/before-run-form/bool-input'
 
 export type IPromptValuePanelProps = {
-  appType: AppType
+  appType: AppModeEnum
   onSend?: () => void
   inputs: Inputs
   visionConfig: VisionSettings
@@ -53,8 +54,26 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
     return obj
   }, [promptVariables])
 
+  // Initialize inputs with default values from promptVariables
+  useEffect(() => {
+    const newInputs = { ...inputs }
+    let hasChanges = false
+
+    promptVariables.forEach((variable) => {
+      const { key, default: defaultValue } = variable
+      // Only set default value if the field is empty and a default exists
+      if (defaultValue !== undefined && defaultValue !== null && defaultValue !== '' && (inputs[key] === undefined || inputs[key] === null || inputs[key] === '')) {
+        newInputs[key] = defaultValue
+        hasChanges = true
+      }
+    })
+
+    if (hasChanges)
+      setInputs(newInputs)
+  }, [promptVariables, inputs, setInputs])
+
   const canNotRun = useMemo(() => {
-    if (mode !== AppType.completion)
+    if (mode !== AppModeEnum.COMPLETION)
       return true
 
     if (isAdvancedMode) {
@@ -66,7 +85,7 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
     else { return !modelConfig.configs.prompt_template }
   }, [chatPromptConfig.prompt, completionPromptConfig.prompt?.text, isAdvancedMode, mode, modelConfig.configs.prompt_template, modelModeType])
 
-  const handleInputValueChange = (key: string, value: string) => {
+  const handleInputValueChange = (key: string, value: string | boolean) => {
     if (!(key in promptVariableObj))
       return
 
@@ -109,10 +128,12 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
                 className='mb-4 last-of-type:mb-0'
               >
                 <div>
-                  <div className='system-sm-semibold mb-1 flex h-6 items-center gap-1 text-text-secondary'>
-                    <div className='truncate'>{name || key}</div>
-                    {!required && <span className='system-xs-regular text-text-tertiary'>{t('workflow.panel.optional')}</span>}
-                  </div>
+                  {type !== 'checkbox' && (
+                    <div className='system-sm-semibold mb-1 flex h-6 items-center gap-1 text-text-secondary'>
+                      <div className='truncate'>{name || key}</div>
+                      {!required && <span className='system-xs-regular text-text-tertiary'>{t('workflow.panel.optional')}</span>}
+                    </div>
+                  )}
                   <div className='grow'>
                     {type === 'string' && (
                       <Input
@@ -151,6 +172,14 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
                         maxLength={max_length || DEFAULT_VALUE_MAX_LEN}
                       />
                     )}
+                    {type === 'checkbox' && (
+                      <BoolInput
+                        name={name || key}
+                        value={!!inputs[key]}
+                        required={required}
+                        onChange={(value) => { handleInputValueChange(key, value) }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -177,11 +206,11 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
           <div className='flex justify-between border-t border-divider-subtle p-4 pt-3'>
             <Button className='w-[72px]' onClick={onClear}>{t('common.operation.clear')}</Button>
             {canNotRun && (
-              <Tooltip popupContent={t('appDebug.otherError.promptNoBeEmpty')} needsDelay>
+              <Tooltip popupContent={t('appDebug.otherError.promptNoBeEmpty')}>
                 <Button
                   variant="primary"
                   disabled={canNotRun}
-                  onClick={() => onSend && onSend()}
+                  onClick={() => onSend?.()}
                   className="w-[96px]">
                   <RiPlayLargeFill className="mr-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                   {t('appDebug.inputs.run')}
@@ -192,7 +221,7 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
               <Button
                 variant="primary"
                 disabled={canNotRun}
-                onClick={() => onSend && onSend()}
+                onClick={() => onSend?.()}
                 className="w-[96px]">
                 <RiPlayLargeFill className="mr-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                 {t('appDebug.inputs.run')}
@@ -204,7 +233,7 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
       <div className='mx-3'>
         <FeatureBar
           showFileUpload={false}
-          isChatMode={appType !== AppType.completion}
+          isChatMode={appType !== AppModeEnum.COMPLETION}
           onFeatureBarClick={setShowAppConfigureFeaturesModal} />
       </div>
     </>

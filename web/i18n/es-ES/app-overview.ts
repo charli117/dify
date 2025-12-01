@@ -49,7 +49,7 @@ const translation = {
           show: 'Mostrar',
           hide: 'Ocultar',
           subTitle: 'Detalles del flujo de trabajo',
-          showDesc: 'Mostrar u ocultar detalles del flujo de trabajo en WebApp',
+          showDesc: 'Mostrar u ocultar detalles del flujo de trabajo en web app',
         },
         chatColorTheme: 'Tema de color del chat',
         chatColorThemeDesc: 'Establece el tema de color del chatbot',
@@ -70,10 +70,10 @@ const translation = {
           copyrightTooltip: 'Actualice al plan Profesional o superior',
         },
         sso: {
-          description: 'Todos los usuarios deben iniciar sesión con SSO antes de usar WebApp',
-          tooltip: 'Póngase en contacto con el administrador para habilitar el inicio de sesión único de WebApp',
+          description: 'Todos los usuarios deben iniciar sesión con SSO antes de usar web app',
+          tooltip: 'Póngase en contacto con el administrador para habilitar el inicio de sesión único de web app',
           label: 'Autenticación SSO',
-          title: 'WebApp SSO',
+          title: 'web app SSO',
         },
         modalTip: 'Configuración de la aplicación web del lado del cliente.',
       },
@@ -114,6 +114,11 @@ const translation = {
         },
       },
       launch: 'Lanzar',
+      enableTooltip: {
+        description: 'Para habilitar esta función, por favor agrega un nodo de Entrada de Usuario al lienzo. (Puede que ya exista en el borrador, surte efecto después de publicar)',
+        learnMore: 'Aprender más',
+      },
+      title: 'Aplicación web',
     },
     apiInfo: {
       title: 'API del servicio backend',
@@ -124,6 +129,17 @@ const translation = {
     status: {
       running: 'En servicio',
       disable: 'Deshabilitar',
+    },
+    triggerInfo: {
+      title: 'Desencadenantes',
+      explanation: 'Gestión de activadores de flujo de trabajo',
+      triggersAdded: 'Se añadieron los disparadores de {{count}}',
+      noTriggerAdded: 'No se agregó ningún disparador',
+      triggerStatusDescription: 'El estado del nodo de activación aparece aquí. (Puede que ya exista en el borrador, surte efecto después de publicar)',
+      learnAboutTriggers: 'Aprende sobre los desencadenantes',
+    },
+    disableTooltip: {
+      triggerMode: 'La función {{feature}} no es compatible en el modo Nodo de disparo.',
     },
   },
   analysis: {

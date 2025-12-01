@@ -29,6 +29,7 @@ import type { Annotation } from '@/models/log'
 import { WorkflowRunningStatus } from '@/app/components/workflow/types'
 import useTimestamp from '@/hooks/use-timestamp'
 import { AudioPlayerManager } from '@/app/components/base/audio-btn/audio.player.manager'
+import type AudioPlayer from '@/app/components/base/audio-btn/audio'
 import type { FileEntity } from '@/app/components/base/file-uploader/types'
 import {
   getProcessedFiles,
@@ -83,12 +84,11 @@ export const useChat = (
     const ret = [...threadMessages]
     if (config?.opening_statement) {
       const index = threadMessages.findIndex(item => item.isOpeningStatement)
-
       if (index > -1) {
         ret[index] = {
           ...ret[index],
           content: getIntroduction(config.opening_statement),
-          suggestedQuestions: config.suggested_questions,
+          suggestedQuestions: config.suggested_questions?.map(item => getIntroduction(item)),
         }
       }
       else {
@@ -97,7 +97,7 @@ export const useChat = (
           content: getIntroduction(config.opening_statement),
           isAnswer: true,
           isOpeningStatement: true,
-          suggestedQuestions: config.suggested_questions,
+          suggestedQuestions: config.suggested_questions?.map(item => getIntroduction(item)),
         })
       }
     }
@@ -309,7 +309,15 @@ export const useChat = (
       else
         ttsUrl = `/apps/${params.appId}/text-to-audio`
     }
-    const player = AudioPlayerManager.getInstance().getAudioPlayer(ttsUrl, ttsIsPublic, uuidV4(), 'none', 'none', noop)
+    // Lazy initialization: Only create AudioPlayer when TTS is actually needed
+    // This prevents opening audio channel unnecessarily
+    let player: AudioPlayer | null = null
+    const getOrCreatePlayer = () => {
+      if (!player)
+        player = AudioPlayerManager.getInstance().getAudioPlayer(ttsUrl, ttsIsPublic, uuidV4(), 'none', 'none', noop)
+
+      return player
+    }
     ssePost(
       url,
       {
@@ -366,8 +374,9 @@ export const useChat = (
             if (!newResponseItem)
               return
 
+            const isUseAgentThought = newResponseItem.agent_thoughts?.length > 0 && newResponseItem.agent_thoughts[newResponseItem.agent_thoughts?.length - 1].thought === newResponseItem.answer
             updateChatTreeNode(responseItem.id, {
-              content: newResponseItem.answer,
+              content: isUseAgentThought ? '' : newResponseItem.answer,
               log: [
                 ...newResponseItem.message,
                 ...(newResponseItem.message[newResponseItem.message.length - 1].role !== 'assistant'
@@ -424,6 +433,8 @@ export const useChat = (
           const response = responseItem as any
           if (thought.message_id && !hasSetResponseId)
             response.id = thought.message_id
+          if (thought.conversation_id)
+            response.conversationId = thought.conversation_id
 
           if (response.agent_thoughts.length === 0) {
             response.agent_thoughts.push(thought)
@@ -580,11 +591,16 @@ export const useChat = (
         onTTSChunk: (messageId: string, audio: string) => {
           if (!audio || audio === '')
             return
-          player.playAudioWithAudio(audio, true)
-          AudioPlayerManager.getInstance().resetMsgId(messageId)
+          const audioPlayer = getOrCreatePlayer()
+          if (audioPlayer) {
+            audioPlayer.playAudioWithAudio(audio, true)
+            AudioPlayerManager.getInstance().resetMsgId(messageId)
+          }
         },
         onTTSEnd: (messageId: string, audio: string) => {
-          player.playAudioWithAudio(audio, false)
+          const audioPlayer = getOrCreatePlayer()
+          if (audioPlayer)
+            audioPlayer.playAudioWithAudio(audio, false)
         },
         onLoopStart: ({ data: loopStartedData }) => {
           responseItem.workflowProcess!.tracing!.push({
@@ -680,7 +696,7 @@ export const useChat = (
     updateChatTreeNode(targetAnswerId, {
       content: chatList[index].content,
       annotation: {
-        ...(chatList[index].annotation || {}),
+        ...chatList[index].annotation,
         id: '',
       } as Annotation,
     })

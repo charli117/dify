@@ -26,14 +26,21 @@ from .dataset import (
     TidbAuthBinding,
     Whitelist,
 )
-from .engine import db
-from .enums import CreatedByRole, UserFrom, WorkflowRunTriggeredFrom
+from .enums import (
+    AppTriggerStatus,
+    AppTriggerType,
+    CreatorUserRole,
+    UserFrom,
+    WorkflowRunTriggeredFrom,
+    WorkflowTriggerStatus,
+)
 from .model import (
     ApiRequest,
     ApiToken,
     App,
     AppAnnotationHitHistory,
     AppAnnotationSetting,
+    AppMCPServer,
     AppMode,
     AppModelConfig,
     Conversation,
@@ -56,6 +63,7 @@ from .model import (
     TraceAppConfig,
     UploadFile,
 )
+from .oauth import DatasourceOauthParamConfig, DatasourceProvider
 from .provider import (
     LoadBalancingModelConfig,
     Provider,
@@ -78,17 +86,24 @@ from .tools import (
     ToolModelInvoke,
     WorkflowToolProvider,
 )
+from .trigger import (
+    AppTrigger,
+    TriggerOAuthSystemClient,
+    TriggerOAuthTenantClient,
+    TriggerSubscription,
+    WorkflowSchedulePlan,
+)
 from .web import PinnedConversation, SavedMessage
 from .workflow import (
     ConversationVariable,
     Workflow,
     WorkflowAppLog,
     WorkflowAppLogCreatedFrom,
-    WorkflowNodeExecution,
-    WorkflowNodeExecutionStatus,
+    WorkflowNodeExecutionModel,
+    WorkflowNodeExecutionOffload,
     WorkflowNodeExecutionTriggeredFrom,
+    WorkflowPause,
     WorkflowRun,
-    WorkflowRunStatus,
     WorkflowType,
 )
 
@@ -100,19 +115,23 @@ __all__ = [
     "AccountStatus",
     "ApiRequest",
     "ApiToken",
-    "ApiToolProvider",  # Added
+    "ApiToolProvider",
     "App",
     "AppAnnotationHitHistory",
     "AppAnnotationSetting",
     "AppDatasetJoin",
+    "AppMCPServer",
     "AppMode",
     "AppModelConfig",
-    "BuiltinToolProvider",  # Added
+    "AppTrigger",
+    "AppTriggerStatus",
+    "AppTriggerType",
+    "BuiltinToolProvider",
     "CeleryTask",
     "CeleryTaskSet",
     "Conversation",
     "ConversationVariable",
-    "CreatedByRole",
+    "CreatorUserRole",
     "DataSourceApiKeyAuthBinding",
     "DataSourceOauthBinding",
     "Dataset",
@@ -123,6 +142,8 @@ __all__ = [
     "DatasetProcessRule",
     "DatasetQuery",
     "DatasetRetrieverResource",
+    "DatasourceOauthParamConfig",
+    "DatasourceProvider",
     "DifySetup",
     "Document",
     "DocumentSegment",
@@ -165,19 +186,23 @@ __all__ = [
     "ToolLabelBinding",
     "ToolModelInvoke",
     "TraceAppConfig",
+    "TriggerOAuthSystemClient",
+    "TriggerOAuthTenantClient",
+    "TriggerSubscription",
     "UploadFile",
     "UserFrom",
     "Whitelist",
     "Workflow",
     "WorkflowAppLog",
     "WorkflowAppLogCreatedFrom",
-    "WorkflowNodeExecution",
-    "WorkflowNodeExecutionStatus",
+    "WorkflowNodeExecutionModel",
+    "WorkflowNodeExecutionOffload",
     "WorkflowNodeExecutionTriggeredFrom",
+    "WorkflowPause",
     "WorkflowRun",
-    "WorkflowRunStatus",
     "WorkflowRunTriggeredFrom",
+    "WorkflowSchedulePlan",
     "WorkflowToolProvider",
+    "WorkflowTriggerStatus",
     "WorkflowType",
-    "db",
 ]

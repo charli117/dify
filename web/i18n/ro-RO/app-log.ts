@@ -1,7 +1,7 @@
 const translation = {
   title: 'Jurnale',
   description: 'Jurnalele înregistrează starea de funcționare a aplicației, inclusiv intrările utilizatorilor și răspunsurile AI.',
-  dateTimeFormat: 'DD/MM/YYYY hh:mm A',
+  dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A',
   table: {
     header: {
       updatedTime: 'Timp actualizare',
@@ -19,6 +19,7 @@ const translation = {
       tokens: 'JETOANE',
       user: 'UTILIZATOR FINAL SAU CONT',
       version: 'VERSIUNE',
+      triggered_from: 'DECLANȘAT DE',
     },
     pagination: {
       previous: 'Anterior',
@@ -65,6 +66,8 @@ const translation = {
       quarterToDate: 'Trimestrul curent',
       yearToDate: 'Anul curent',
       allTime: 'Tot timpul',
+      custom: 'Personalizat',
+      last30days: 'Ultimele 30 de zile',
     },
     annotation: {
       all: 'Toate',
@@ -82,6 +85,7 @@ const translation = {
     workflowTitle: 'Detalii jurnal',
     fileListDetail: 'Amănunt',
     fileListLabel: 'Detalii fișier',
+    testWithParams: 'Test cu parametri',
   },
   promptLog: 'Jurnal prompt',
   agentLog: 'Jurnal agent',
@@ -92,6 +96,16 @@ const translation = {
     iterations: 'Iterații',
     iteration: 'Iterație',
     finalProcessing: 'Procesare finală',
+  },
+  dateFormat: 'ZZ/LL/AAAA',
+  triggerBy: {
+    debugging: 'Depanare',
+    appRun: 'Aplicație web',
+    webhook: 'Webhook',
+    schedule: 'Program',
+    plugin: 'Plugin',
+    ragPipelineRun: 'Flux RAG',
+    ragPipelineDebugging: 'Depanare RAG',
   },
 }
 

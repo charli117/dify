@@ -4,7 +4,7 @@ FROM python:3.12-slim-bookworm AS base
 WORKDIR /app/api
 
 # Install uv
-ENV UV_VERSION=0.6.14
+ENV UV_VERSION=0.8.9
 
 RUN pip install --no-cache-dir uv==${UV_VERSION}
 
@@ -15,11 +15,15 @@ FROM base AS packages
 # RUN sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc g++ libc-dev libffi-dev libgmp-dev libmpfr-dev libmpc-dev
+    && apt-get install -y --no-install-recommends \
+          # basic environment
+          g++ \
+          # for building gmpy2
+          libmpfr-dev libmpc-dev
 
 # Install Python dependencies
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked
+RUN uv sync --locked --no-dev
 
 # production stage
 FROM base AS production
@@ -37,16 +41,31 @@ EXPOSE 5001
 # set timezone
 ENV TZ=UTC
 
+# Set UTF-8 locale
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV PYTHONIOENCODING=utf-8
+
 WORKDIR /app/api
+
+# Create non-root user
+ARG dify_uid=1001
+RUN groupadd -r -g ${dify_uid} dify && \
+    useradd -r -u ${dify_uid} -g ${dify_uid} -s /bin/bash dify && \
+    chown -R dify:dify /app
 
 RUN \
     apt-get update \
     # Install dependencies
     && apt-get install -y --no-install-recommends \
         # basic environment
-        curl nodejs libgmp-dev libmpfr-dev libmpc-dev \
+        curl nodejs \
+        # for gmpy2 \
+        libgmp-dev libmpfr-dev libmpc-dev \
         # For Security
-        expat libldap-2.5-0 perl libsqlite3-0 zlib1g \
+        expat libldap-2.5-0=2.5.13+dfsg-5 perl libsqlite3-0=3.40.1-2+deb12u2 zlib1g=1:1.2.13.dfsg-1 \
+        # install fonts to support the use of tools like pypdfium2
+        fonts-noto-cjk \
         # install a package to improve the accuracy of guessing mime type and file extension
         media-types \
         # install libmagic to support the use of python-magic guess MIMETYPE
@@ -56,24 +75,29 @@ RUN \
 
 # Copy Python environment and packages
 ENV VIRTUAL_ENV=/app/api/.venv
-COPY --from=packages ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=packages --chown=dify:dify ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 
 # Download nltk data
-RUN python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
+RUN mkdir -p /usr/local/share/nltk_data && NLTK_DATA=/usr/local/share/nltk_data python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger'); nltk.download('stopwords')" \
+    && chmod -R 755 /usr/local/share/nltk_data
 
 ENV TIKTOKEN_CACHE_DIR=/app/api/.tiktoken_cache
 
-RUN python -c "import tiktoken; tiktoken.encoding_for_model('gpt2')"
+RUN python -c "import tiktoken; tiktoken.encoding_for_model('gpt2')" \
+    && chown -R dify:dify ${TIKTOKEN_CACHE_DIR}
 
 # Copy source code
-COPY . /app/api/
+COPY --chown=dify:dify . /app/api/
 
-# Copy entrypoint
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Prepare entrypoint script
+COPY --chown=dify:dify --chmod=755 docker/entrypoint.sh /entrypoint.sh
+
 
 ARG COMMIT_SHA
 ENV COMMIT_SHA=${COMMIT_SHA}
+ENV NLTK_DATA=/usr/local/share/nltk_data
+
+USER dify
 
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

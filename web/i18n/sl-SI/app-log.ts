@@ -1,7 +1,7 @@
 const translation = {
   title: 'Dnevniki',
   description: 'Dnevniki beležijo stanje delovanja aplikacije, vključno z vnosi uporabnikov in odgovori umetne inteligence.',
-  dateTimeFormat: 'DD.MM.YYYY hh:mm A',
+  dateTimeFormat: 'DD.MM.YYYY hh:mm:ss A',
   table: {
     header: {
       updatedTime: 'Čas posodobitve',
@@ -19,6 +19,7 @@ const translation = {
       tokens: 'ŽETONI',
       user: 'Končni uporabnik ali račun',
       version: 'VERZIJA',
+      triggered_from: 'SPROŽENO Z',
     },
     pagination: {
       previous: 'Prejšnja',
@@ -65,6 +66,8 @@ const translation = {
       quarterToDate: 'Četrtletje do danes',
       yearToDate: 'Leto do danes',
       allTime: 'Vse obdobje',
+      last30days: 'Zadnjih 30 dni',
+      custom: 'Po meri',
     },
     annotation: {
       all: 'Vse',
@@ -82,6 +85,7 @@ const translation = {
     workflowTitle: 'Podrobnosti dnevnika',
     fileListDetail: 'Podrobnosti',
     fileListLabel: 'Podrobnosti o datoteki',
+    testWithParams: 'Preizkus s parametri',
   },
   promptLog: 'Dnevnik PROMPT-ov',
   agentLog: 'Dnevnik pomočnika',
@@ -92,6 +96,16 @@ const translation = {
     iterations: 'Iteracije',
     iteration: 'Iteracija',
     finalProcessing: 'Končna obdelava',
+  },
+  dateFormat: 'MM/DD/LETNO',
+  triggerBy: {
+    debugging: 'Razhroščevanje',
+    appRun: 'Spletna aplikacija',
+    webhook: 'Webhook',
+    schedule: 'Urnik',
+    plugin: 'Vtičnik',
+    ragPipelineRun: 'RAG cevovod',
+    ragPipelineDebugging: 'RAG odpravljanje napak',
   },
 }
 

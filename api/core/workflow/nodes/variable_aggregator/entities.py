@@ -1,7 +1,6 @@
-from typing import Literal, Optional
-
 from pydantic import BaseModel
 
+from core.variables.types import SegmentType
 from core.workflow.nodes.base import BaseNodeData
 
 
@@ -17,19 +16,18 @@ class AdvancedSettings(BaseModel):
         Group.
         """
 
-        output_type: Literal["string", "number", "object", "array[string]", "array[number]", "array[object]"]
+        output_type: SegmentType
         variables: list[list[str]]
         group_name: str
 
     groups: list[Group]
 
 
-class VariableAssignerNodeData(BaseNodeData):
+class VariableAggregatorNodeData(BaseNodeData):
     """
-    Variable Assigner Node Data.
+    Variable Aggregator Node Data.
     """
 
-    type: str = "variable-assigner"
     output_type: str
     variables: list[list[str]]
-    advanced_settings: Optional[AdvancedSettings] = None
+    advanced_settings: AdvancedSettings | None = None
